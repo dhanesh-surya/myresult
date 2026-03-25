@@ -1,0 +1,1 @@
+web: gunicorn result_portal.wsgi --bind 0.0.0.0:$PORT

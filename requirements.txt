@@ -1,0 +1,8 @@
+Django>=5.0
+gunicorn
+psycopg2-binary
+pandas
+openpyxl
+selenium
+django-cors-headers
+whitenoise
