@@ -56,17 +56,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "result_portal.wsgi.application"
 
-# Database - PostgreSQL for production
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("PGDATABASE", "postgres"),
-        "USER": os.environ.get("PGUSER", "postgres"),
-        "PASSWORD": os.environ.get("PGPASSWORD", ""),
-        "HOST": os.environ.get("PGHOST", "localhost"),
-        "PORT": os.environ.get("PGPORT", "5432"),
+# Database - Use SQLite locally, PostgreSQL for production
+# Check if PostgreSQL credentials are provided
+pg_host = os.environ.get("PGHOST", "")
+
+if pg_host:  # PostgreSQL config exists (production)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("PGDATABASE", "postgres"),
+            "USER": os.environ.get("PGUSER", "postgres"),
+            "PASSWORD": os.environ.get("PGPASSWORD", ""),
+            "HOST": pg_host,
+            "PORT": os.environ.get("PGPORT", "5432"),
+        }
     }
-}
+else:  # No PostgreSQL, use SQLite (local development)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
